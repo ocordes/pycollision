@@ -5,7 +5,7 @@ python:
   - "3.7"
 install:
   - pip install numpy nose2
-  - pip -e .
+  - pip install -e .
 
 script:
   - nose2 -s tests
