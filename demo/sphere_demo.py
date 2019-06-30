@@ -26,7 +26,14 @@ if __name__ == '__main__':
     print(s1.position)
 
 
-    s2 = Sphere([5, 0, 0], 1.)
+    s1 = Sphere([0, 0, 0], 1)
+    print(s1.position)
+    s2 = Sphere([3., 0, 0], 1.)
     print(s2.position)
 
-    print(s2)
+
+    result = s1.has_collisions(s2, verbose=True)
+
+    print(result)
+    # get the result
+    print(result())
