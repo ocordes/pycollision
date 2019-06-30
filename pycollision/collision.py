@@ -13,10 +13,7 @@ import pycollision.objects
 
 class Collision(object):
     def __init__(self):
-        if 1==1:
-            pass
         pass
-
 
     def has_collisions(self):
         pass
