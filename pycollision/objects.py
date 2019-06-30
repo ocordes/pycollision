@@ -37,6 +37,10 @@ class Sphere(BasicObject):
         return self._radius
 
 
+    def __repr__(self):
+        return 'Sphere({}, {})'.format(self._x.__repr__(), self._radius)
+
+
 
 class Box(BasicObject):
     def __init__(self, x, y):
@@ -47,4 +51,3 @@ class Box(BasicObject):
 class Plane(BasicObject):
     def __init__(self):
         BasicObject.__init__(self)
-        
