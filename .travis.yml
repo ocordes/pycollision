@@ -9,8 +9,10 @@ python:
   - "3.6"
   - "3.7"
 install:
-  - pip install numpy nose2
-  - pip install -e .
-
+  - pip install -e . --use-mirrors
+before_script:
+  - pip install -r test_requirements.txt --use-mirrors
 script:
-  - nose2 -s tests
+  - py.test tests --doctest-modules --pep8 pycollision  -v --cov pycollision --cov-report term-missing tests
+after_success:
+  - coveralls

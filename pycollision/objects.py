@@ -12,11 +12,15 @@ from pycollision.position import Position
 from pycollision.utils import input2position, input2float
 
 
+from pycollision.collision import Collision
+
+
 # every object needs
 
-class BasicObject(Position):
+class BasicObject(Position, Collision):
     def __init__(self):
         Position.__init__(self)
+        Collision.__init__(self)
 
 
 
