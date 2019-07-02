@@ -14,6 +14,11 @@ from pycollision.utils import input2vector, input2float
 
 from pycollision.collision import Collision
 
+from pycollision.typevalidation.decorator import typevalidate
+
+
+import numpy as np
+
 
 # every object needs
 
@@ -24,6 +29,7 @@ class BasicObject(Position, Collision):
 
 
 class Sphere(BasicObject):
+    @typevalidate()
     def __init__(self, x, radius):
         BasicObject.__init__(self)
         self._x = input2vector(x)
