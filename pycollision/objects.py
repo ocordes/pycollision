@@ -15,7 +15,7 @@ from pycollision.utils import input2vector, input2float
 from pycollision.collision import Collision
 
 from pycollision.typevalidation.decorator import typevalidate
-
+from pycollision.typevalidation.types import PosInt, Vector
 
 import numpy as np
 
@@ -29,8 +29,8 @@ class BasicObject(Position, Collision):
 
 
 class Sphere(BasicObject):
-    @typevalidate()
-    def __init__(self, x, radius):
+    @typevalidate(isclass=True)
+    def __init__(self, x:Vector, radius:float, debug:bool=False):
         BasicObject.__init__(self)
         self._x = input2vector(x)
         self._radius = input2float(radius)
