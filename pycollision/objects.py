@@ -14,8 +14,8 @@ from pycollision.utils import input2vector, input2float
 
 from pycollision.collision import Collision
 
-from pycollision.typevalidation.decorator import typevalidate
-from pycollision.typevalidation.types import PosInt, Vector
+from typevalidation.decorator import typevalidate
+from typevalidation.types import PosInt, Vector
 
 import numpy as np
 
