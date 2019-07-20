@@ -18,7 +18,7 @@ from typevalidation.decorator import typevalidate
 from typevalidation.types import PosInt, PosFloat, Vector
 
 import numpy as np
-
+import numpy.linalg as nl
 
 # every object needs
 
@@ -48,10 +48,50 @@ class Sphere(BasicObject):
 
 
 class Box(BasicObject):
+    @typevalidate(isclass=True)
     def __init__(self, x1:Vector, x2:Vector):
         BasicObject.__init__(self)
         self._x1 = x1
         self._x2 = x2
+
+        self._center = (x2 - x1) / 2.
+
+
+    @property
+    def position(self):
+        return [self.calculate_position(self._x1), self.calculate_position(self._x2)]
+
+
+    def get_six_plane(self, x1, x2):
+        a = np.array([x1[0], x1[1], x1[2]])
+        b = np.array([x2[0], x1[1], x1[2]])
+        c = np.array([x2[0], x1[1], x2[2]])
+        d = np.array([x1[0], x1[1], x2[2]])
+        e = np.array([x1[0], x2[1], x1[2]])
+        f = np.array([x2[0], x2[1], x1[2]])
+        g = np.array([x2[0], x2[1], x2[2]])
+        h = np.array([x1[0], x2[1], x2[2]])
+        s1 = [a, d, e, h]
+        s2 = [a, b, f, e]
+        s3 = [b, c, g, f]
+        s4 = [d, c, g, h]
+        s5 = [a, b, c, d]
+        s6 = [e, f, g, h]
+
+        return [s1, s2, s3, s4, s5, s6]
+
+
+    def get_single_volume(self, plane):
+        v1 = plane[0] - plane[1]
+        v2 = plane[0] - plane[2]
+
+        print(nl.norm(np.cross(v1, v2)))
+
+
+    def get_volume(self):
+        six = self.get_six_plane(self._x1, self._x2)
+
+        self.get_single_volume(six[0])
 
 
 
