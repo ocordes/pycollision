@@ -137,11 +137,10 @@ def coll_box2box(box1, box2, **kwargs):
     result = CollisionResult()
 
     collision = box_inside_box(box1, box2, atol, verbose)
-    if collision == False:
+    if not collision:
         collision = box_inside_box(box2, box1, atol, verbose)
 
     result['collision'] = collision
-
 
     if verbose:
         debug('collision:', result['collision'])

@@ -21,7 +21,7 @@ zero_matrix = np.array([[1., 0., 0., 0.],
 class Position(object):
     def __init__(self):
         self._matrix = zero_matrix.copy()
-        self._post_translation = np.array([0., 0., 0.,], dtype=np.float64)
+        self._post_translation = np.array([0., 0., 0.], dtype=np.float64)
 
     @property
     def rotation(self):
