@@ -14,6 +14,9 @@ from pycollision.utils import input2vector, input2float
 
 from pycollision.collision import Collision
 
+from pycollision.debug import debug
+
+
 from typevalidation.decorator import typevalidate
 from typevalidation.types import PosInt, PosFloat, Vector
 
@@ -23,17 +26,20 @@ import numpy.linalg as nl
 # every object needs
 
 class BasicObject(Position, Collision):
-    def __init__(self):
+    def __init__(self, verbose=False):
         Position.__init__(self)
         Collision.__init__(self)
+
+        self._verbose = verbose
 
 
 class Sphere(BasicObject):
     @typevalidate(isclass=True)
-    def __init__(self, x:Vector, radius:PosFloat, debug:bool=False):
-        BasicObject.__init__(self)
+    def __init__(self, x:Vector, radius:PosFloat, verbose:bool=False):
+        BasicObject.__init__(self,verbose=vebose)
         self._x = x
         self._radius = radius
+
 
     @property
     def position(self):
@@ -49,12 +55,19 @@ class Sphere(BasicObject):
 
 class Box(BasicObject):
     @typevalidate(isclass=True)
-    def __init__(self, x1:Vector, x2:Vector):
-        BasicObject.__init__(self)
+    def __init__(self, x1:Vector, x2:Vector, verbose:bool=False):
+        BasicObject.__init__(self, verbose=verbose)
         self._x1 = x1
         self._x2 = x2
 
         self._center = (x2 - x1) / 2.
+
+        self._six, self._corners = self.get_box_planes_and_corners(self._x1, self._x2)
+
+        self._volume = self.get_volume(self._center)
+
+        if self._verbose:
+            debug('reference volume:', self._volume)
 
 
     @property
@@ -62,7 +75,7 @@ class Box(BasicObject):
         return [self.calculate_position(self._x1), self.calculate_position(self._x2)]
 
 
-    def get_six_plane(self, x1, x2):
+    def get_box_planes_and_corners(self, x1, x2):
         a = np.array([x1[0], x1[1], x1[2]])
         b = np.array([x2[0], x1[1], x1[2]])
         c = np.array([x2[0], x1[1], x2[2]])
@@ -78,20 +91,46 @@ class Box(BasicObject):
         s5 = [a, b, c, d]
         s6 = [e, f, g, h]
 
-        return [s1, s2, s3, s4, s5, s6]
+        return [s1, s2, s3, s4, s5, s6], [a, b, c, d, e, f, g, h]
 
 
-    def get_single_volume(self, plane):
+    def get_six_plane_corrected(self):
+        nsix = []
+        for i in self._six:
+            ni = []
+            for j in i:
+                nj = self.calculate_position(j)
+                ni.append(nj)
+            nsix.append(ni)
+
+        return nsix
+
+
+    def get_single_volume(self, plane, height):
         v1 = plane[0] - plane[1]
         v2 = plane[0] - plane[2]
+        hv = height - plane[0]   # the height vector on one edge of the pyramid
 
-        print(nl.norm(np.cross(v1, v2)))
+        nv = np.cross(v1,v2)     # normal vector of the plane
+        nnv = nl.norm(nv)        # the normalization of the normal vector
+                                 # is equal to the area of the plane
+
+        phv = np.dot(hv, nv) / nnv      # the projected height vector in the center
+        nh = nl.norm(phv)        # scalar height of the pyramid
+
+        return nnv * nh / 3.
 
 
-    def get_volume(self):
-        six = self.get_six_plane(self._x1, self._x2)
 
-        self.get_single_volume(six[0])
+    def get_volume(self, center=None):
+        if center is None:
+            center = self.calculate_position(self._center)
+        six = self.get_six_plane_corrected()
+
+        vol = 0.
+        for i in six:
+            vol += self.get_single_volume(i, center)
+        return vol
 
 
 

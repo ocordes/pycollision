@@ -28,6 +28,10 @@ class Collision(object):
             if isinstance(obj, pycollision.objects.Sphere):
                 return coll_sphere2sphere(self, obj, **kwargs)
 
+        if isinstance(self, pycollision.objects.Box):
+            if isinstance(obj, pycollision.objects.Box):
+                return coll_box2box(self, obj, **kwargs)
+
         raise ValueError('Cannot find any collision procedure' +
                          ' for given types {} and {}'.format(
                                 self.__class__.__name__,
@@ -80,19 +84,64 @@ def coll_sphere2sphere(sph1, sph2, **kwargs):
 
     result['distance'] = distance
     if verbose:
-        debug('absolte distance is:', distance)
+        debug(' absolte distance is:', distance)
 
     distance -= sph1.radius + sph2.radius
 
     result['outerdistance'] = distance
     if verbose:
-        debug('outer distance is:', distance)
+        debug(' outer distance is:', distance)
 
     # every outside atol is clear
     if distance < atol:
         result['collision'] = True
     else:
         result['collision'] = np.isclose(distance, 0., atol=atol)
+
+    if verbose:
+        debug(' collision:', result['collision'])
+        debug('Done.')
+
+    return result
+
+
+def box_inside_box(box1, box2, atol, verbose):
+    # the algorithm based on the assumption that we can check if
+    # all corner points of box1 are not in box2 the box1 has no
+    # overlap with box2 (true, but one has to check the other way
+    # as well)!
+
+    for i in box1._corners:
+        i = box1.calculate_position(i)
+        vol = box2.get_volume(center=i)
+        if verbose:
+            debug(' c=%s vol=%g vol_ref=%g' % (i, vol, box2._volume))
+        if np.isclose(vol, box2._volume, rtol=atol, atol=atol):
+            return True
+
+    return False
+
+
+def coll_box2box(box1, box2, **kwargs):
+    atol = cmp_atol
+    # handle all arguments
+    for key, value in kwargs.items():
+        if key == 'verbose':
+            verbose = value
+        elif key == 'atol':
+            atol = value
+
+    if verbose:
+        debug('calculating collision between two boxes')
+        debug(' atol=%g' % atol)
+    result = CollisionResult()
+
+    collision = box_inside_box(box1, box2, atol, verbose)
+    if collision == False:
+        collision = box_inside_box(box2, box1, atol, verbose)
+
+    result['collision'] = collision
+
 
     if verbose:
         debug('collision:', result['collision'])
