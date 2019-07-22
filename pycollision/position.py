@@ -3,11 +3,12 @@
 pycollision/position.py
 
 written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-06-30
+changed by: Oliver Cordes 2019-07-22
 
 """
 
-from pycollision.utils import input2vector, input2matrix
+from typevalidation.decorator import typevalidate
+from typevalidation.types import Vector, Matrix
 
 import numpy as np
 
@@ -28,8 +29,8 @@ class Position(object):
         return self._matrix[:3, :3]
 
     @rotation.setter
-    def rotation(self, val):
-        val = input2matrix(val)
+    @typevalidate(isclass=True)
+    def rotation(self, val: Matrix):
         zval = zero_matrix.copy()
         zval[:3, :3] = val
 
@@ -40,9 +41,8 @@ class Position(object):
         return self._matrix[3, :3]
 
     @translation.setter
-    def translation(self, val):
-        val = input2vector(val)
-
+    @typevalidate(isclass=True)
+    def translation(self, val: Vector):
         self._matrix[:3, 3] += val
 
         # alternatively
@@ -55,11 +55,12 @@ class Position(object):
         return self._post_translation
 
     @post_translation.setter
-    def post_translation(self, val):
-        val = input2vector(val)
+    @typevalidate(isclass=True)
+    def post_translation(self, val: Vector):
         self._post_translation += val
 
-    def calculate_position(self, val):
+    @typevalidate(isclass=True)
+    def calculate_position(self, val: Vector):
         xval = np.array([0., 0., 0., 1.], dtype=np.float64)
         xval[:3] = val
 

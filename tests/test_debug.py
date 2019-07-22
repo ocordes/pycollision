@@ -26,7 +26,6 @@ class TestDebug(unittest.TestCase):
 
         assert fake_stdout.getvalue() == 'DEBUG: Something\n'
 
-
     """
     Test the debug output with more than 1 parameter
     """

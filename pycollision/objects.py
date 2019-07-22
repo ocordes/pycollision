@@ -3,19 +3,13 @@
 pycollision/objects.py
 
 written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-06-29
+changed by: Oliver Cordes 2019-07-22
 
 """
 
 from pycollision.position import Position
-
-from pycollision.utils import input2vector, input2float
-
-
 from pycollision.collision import Collision
-
 from pycollision.debug import debug
-
 
 from typevalidation.decorator import typevalidate
 from typevalidation.types import PosInt, PosFloat, Vector
