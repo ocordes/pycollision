@@ -38,7 +38,7 @@ class Position(object):
 
     @property
     def translation(self):
-        return self._matrix[3, :3]
+        return self._matrix[:3, 3]
 
     @translation.setter
     @typevalidate(isclass=True)

@@ -24,7 +24,7 @@ class TestDebug(unittest.TestCase):
         with mock.patch('sys.stdout', new=io.StringIO()) as fake_stdout:
             debug('Something')
 
-        assert fake_stdout.getvalue() == 'DEBUG: Something\n'
+        self.assertEqual(fake_stdout.getvalue(), 'DEBUG: Something\n')
 
     """
     Test the debug output with more than 1 parameter
@@ -33,4 +33,4 @@ class TestDebug(unittest.TestCase):
         with mock.patch('sys.stdout', new=io.StringIO()) as fake_stdout:
             debug(42, 'the answer')
 
-        assert fake_stdout.getvalue() == 'DEBUG: 42 the answer\n'
+        self.assertEqual(fake_stdout.getvalue(), 'DEBUG: 42 the answer\n')
