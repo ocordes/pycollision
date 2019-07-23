@@ -53,3 +53,60 @@ class TestInit(unittest.TestCase):
     def test_test73(self):
         with self.assertRaises(TypeError) as context:
             s1 = Sphere([0, 0, 0], 'string')
+
+
+class TestCollision(unittest.TestCase):
+    # test 2 spheres no collision
+    def test_test1(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([10, 0, 0], 1.)
+
+        result = s1.has_collisions(s2)
+
+        self.assertEqual(result['collision'], False)
+
+    # test 2 spheres with collision
+    def test_test1(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([1, 0, 0], 1.)
+
+        result = s1.has_collisions(s2)
+
+        self.assertEqual(result['collision'], True)
+
+    # test 2 spheres are touching each other
+    def test_test1(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([2, 0, 0], 1.)
+
+        result = s1.has_collisions(s2)
+
+        self.assertEqual(result['collision'], True)
+
+    # test 2 spheres almost touching, verbose testing
+    def test_test1(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([2, 0, 0], 1.)
+
+        result = s1.has_collisions(s2, verbose=True)
+
+        self.assertEqual(result['collision'], True)
+
+    # test 2 spheres almost touching with atol -> collision
+    def test_test3(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([2, 0, 0], 1.)
+        s2.translation = [1e-4, 0, 0]
+
+        result = s1.has_collisions(s2, atol=1e-3)
+
+        self.assertEqual(result['collision'], True)
+
+    def test_test4(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([2, 0, 0], 1.)
+        s2.translation = [1e-4, 0, 0]
+
+        result = s1.has_collisions(s2, atol=1e-5)
+
+        self.assertEqual(result['collision'], False)

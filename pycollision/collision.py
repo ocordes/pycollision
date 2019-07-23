@@ -68,6 +68,7 @@ class CollisionResult(object):
 
 def coll_sphere2sphere(sph1, sph2, **kwargs):
     atol = cmp_atol
+    verbose = False
     # handle all arguments
     for key, value in kwargs.items():
         if key == 'verbose':
@@ -84,13 +85,13 @@ def coll_sphere2sphere(sph1, sph2, **kwargs):
 
     result['distance'] = distance
     if verbose:
-        debug(' absolte distance is:', distance)
+        debug(' absolute distance is: %g' % distance)
 
     distance -= sph1.radius + sph2.radius
 
     result['outerdistance'] = distance
     if verbose:
-        debug(' outer distance is:', distance)
+        debug(' outer distance is: %g' % distance)
 
     # every outside atol is clear
     if distance < atol:
@@ -124,6 +125,7 @@ def box_inside_box(box1, box2, atol, verbose):
 
 def coll_box2box(box1, box2, **kwargs):
     atol = cmp_atol
+    verbose = False
     # handle all arguments
     for key, value in kwargs.items():
         if key == 'verbose':
