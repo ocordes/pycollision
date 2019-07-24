@@ -3,13 +3,15 @@
 pycollision/objects.py
 
 written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-07-22
+changed by: Oliver Cordes 2019-07-24
 
 """
 
 from pycollision.position import Position
 from pycollision.collision import Collision
+from pycollision.geometry import pyramid_volume
 from pycollision.debug import debug
+
 
 from typevalidation.decorator import typevalidate
 from typevalidation.types import PosInt, PosFloat, Vector
@@ -125,10 +127,22 @@ class Box(BasicObject):
 
         vol = 0.
         for i in six:
-            vol += self.get_single_volume(i, center)
+            # vol += self.get_single_volume(i, center)
+            vol += pyramid_volume(i, center)
         return vol
 
 
 class Plane(BasicObject):
-    def __init__(self):
-        BasicObject.__init__(self)
+    @typevalidate(isclass=True)
+    def __init__(self, n: Vector, d: float, verbose: bool=False):
+        BasicObject.__init__(self, verbose=verbose)
+        self._n = n
+        self._d = d
+
+    @property
+    def norm_vector(self):
+        return self.calculate_position(self._n)
+
+    @property
+    def distance(self):
+        return self._d

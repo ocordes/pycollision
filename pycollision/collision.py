@@ -10,6 +10,7 @@ changed by: Oliver Cordes 2019-06-30
 
 import pycollision.objects
 from pycollision.debug import debug
+from pycollision.geometry import *
 
 
 import numpy as np
@@ -27,10 +28,17 @@ class Collision(object):
         if isinstance(self, pycollision.objects.Sphere):
             if isinstance(obj, pycollision.objects.Sphere):
                 return coll_sphere2sphere(self, obj, **kwargs)
+            elif isinstance(obj, pycollision.objects.Plane):
+                return coll_sphere2plane(self, obj, **kwargs)
 
         if isinstance(self, pycollision.objects.Box):
             if isinstance(obj, pycollision.objects.Box):
                 return coll_box2box(self, obj, **kwargs)
+
+        if isinstance(self, pycollision.objects.Plane):
+            if isinstance(obj, pycollision.objects.Plane):
+                return coll_plane2plane(self, obj, **kwargs)
+
 
         raise ValueError('Cannot find any collision procedure' +
                          ' for given types {} and {}'.format(
@@ -143,6 +151,71 @@ def coll_box2box(box1, box2, **kwargs):
         collision = box_inside_box(box2, box1, atol, verbose)
 
     result['collision'] = collision
+
+    if verbose:
+        debug('collision:', result['collision'])
+        debug('Done.')
+
+    return result
+
+
+def coll_plane2plane(plane1, plane2, **kwargs):
+    atol = cmp_atol
+    verbose = False
+    # handle all arguments
+    for key, value in kwargs.items():
+        if key == 'verbose':
+            verbose = value
+        elif key == 'atol':
+            atol = value
+
+    if verbose:
+        debug('calculating collision between two planes')
+        debug(' atol=%g' % atol)
+    result = CollisionResult()
+
+    if verbose:
+        debug('collision:', result['collision'])
+        debug('Done.')
+
+    return result
+
+
+def coll_sphere2plane(sphere, plane, **kwargs):
+    atol = cmp_atol
+    verbose = False
+    # handle all arguments
+    for key, value in kwargs.items():
+        if key == 'verbose':
+            verbose = value
+        elif key == 'atol':
+            atol = value
+
+    if verbose:
+        debug('calculating collision between a sphere and a plane')
+        debug(' atol=%g' % atol)
+    result = CollisionResult()
+
+    v = sphere.position
+
+    # the vector s is the vector which is perpendicular to
+    # the plane pointing direct to the center of the sphere
+    s = projection_vector(v, plane.norm_vector)
+
+    distance = nl.norm(s) + plane.distance
+
+    result['distance'] = distance
+    if verbose:
+        debug(' absolute distance is: %g' % distance)
+
+    distance -= sphere.radius
+
+    result['outerdistance'] = distance
+    if verbose:
+        debug(' outer distance is: %g' % distance)
+
+    # every outside atol is clear
+    result['collision'] = np.isclose(distance, 0., atol=atol)
 
     if verbose:
         debug('collision:', result['collision'])
