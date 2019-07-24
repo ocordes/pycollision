@@ -4,4 +4,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/ocordes/pycollision/badge.svg?branch=master)](https://coveralls.io/github/ocordes/pycollision?branch=master)
 
 
-Python module to detect collisions between 2d/3d objects
+Python module to detect collisions between 2d/3d objects!
+
+At the moment these 3d objects are defined:
+* Spheres
+* Boxes
+
+Also only Sphere<->Sphere and Box<->Box collision detection algorithms are implemented.
