@@ -110,3 +110,21 @@ class TestCollision(unittest.TestCase):
         result = s1.has_collisions(s2, atol=1e-5)
 
         self.assertEqual(result['collision'], False)
+
+    # additional parameter for has_collisions
+    def test_test5(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        s2 = Sphere([2, 0, 0], 1.)
+        s2.translation = [1e-4, 0, 0]
+
+        result = s1.has_collisions(s2, atol=1e-5, item='value')
+
+        self.assertEqual(result['collision'], False)
+
+    # test of collision with not collision objects
+    def test_test100(self):
+        s1 = Sphere([0, 0, 0], 1.)
+        i = 1  # int object
+
+        with self.assertRaises(ValueError) as context:
+            result = s1.has_collisions(i)
