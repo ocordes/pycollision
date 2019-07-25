@@ -38,6 +38,6 @@ if __name__ == '__main__':
         print('%2i : %s' % (i, b1.has_collisions(b2, verbose=False, atol=1e-10)))
         b1.rotation = create_rotation_Z(-1)
 
-    print(b1.has_collisions(b2, verbose=False, atol=1e-10))
+    #print(b1.has_collisions(b2, verbose=False, atol=1e-10))
 
     # obviously after a rotation >30 degrees both boxes are colliding!

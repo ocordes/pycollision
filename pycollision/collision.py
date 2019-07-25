@@ -39,7 +39,6 @@ class Collision(object):
             if isinstance(obj, pycollision.objects.Plane):
                 return coll_plane2plane(self, obj, **kwargs)
 
-
         raise ValueError('Cannot find any collision procedure' +
                          ' for given types {} and {}'.format(
                                 self.__class__.__name__,

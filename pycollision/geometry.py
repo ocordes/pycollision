@@ -11,8 +11,6 @@ import numpy as np
 import numpy.linalg as nl
 
 
-
-
 def projection_vector(v, ref):
     """
     projection_vector
@@ -27,7 +25,7 @@ def projection_vector(v, ref):
     nref = nl.norm(ref)
 
     # calculate the projected vector
-    return np.dot(v, ref) / nref
+    return ref * np.dot(v, ref) / (nref**2)
 
 
 def pyramid_volume(plane, height):
@@ -54,8 +52,9 @@ def pyramid_volume(plane, height):
     nnv = nl.norm(nv)
 
     # the projected height vector in the center
-    phv = projection_vector(hv, nv)
-    # scalar height of the pyramid
-    nh = nl.norm(phv)
+    # phv = nv * np.dot(hv, nv) / (nnv**2)
+    # length of the vector is the scalar height of the pyramid
+    # nh = nl.norm(phv)
+    nh = np.abs(np.dot(hv, nv) / nnv)
 
     return nnv * nh / 3.

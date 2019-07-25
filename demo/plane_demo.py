@@ -1,5 +1,5 @@
 """
-sphere_demo.py
+plane_demo.py
 
 demonstration of the Plane handling and collision detection
 
@@ -14,6 +14,12 @@ from pycollision.rotation import *
 import numpy as np
 
 if __name__ == '__main__':
+
+    p1 = create_xy_plane(1)
+
+    print(p1.norm_vector)
+    print(p1.distance)
+
 
     s1 = Sphere([0, 0, 0], 1.)
 
