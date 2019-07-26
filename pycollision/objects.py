@@ -3,13 +3,13 @@
 pycollision/objects.py
 
 written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-07-24
+changed by: Oliver Cordes 2019-07-26
 
 """
 
 from pycollision.position import Position
 from pycollision.collision import Collision
-from pycollision.geometry import pyramid_volume
+from pycollision.geometry import projection_vector, pyramid_volume
 from pycollision.debug import debug
 
 
@@ -100,26 +100,6 @@ class Box(BasicObject):
 
         return nsix
 
-    def get_single_volume(self, plane, height):
-        v1 = plane[0] - plane[1]
-        v2 = plane[0] - plane[2]
-
-        # the height vector on one edge of the pyramid
-        hv = height - plane[0]
-
-        # normal vector of the plane
-        nv = np.cross(v1, v2)
-        # the normalization of the normal vector
-        # is equal to the area of the plane
-        nnv = nl.norm(nv)
-
-        # the projected height vector in the center
-        phv = np.dot(hv, nv) / nnv
-        # scalar height of the pyramid
-        nh = nl.norm(phv)
-
-        return nnv * nh / 3.
-
     def get_volume(self, center=None):
         if center is None:
             center = self.calculate_position(self._center)
@@ -141,8 +121,19 @@ class Plane(BasicObject):
 
     @property
     def norm_vector(self):
-        return self.calculate_position(self._n)
+        # calculate_position is not the right procedure here
+        # we need only the rotation applied to the norm_vector
+        return np.dot(self.rotation, self._n)
 
     @property
     def distance(self):
-        return self._d
+        # the distance is a little bit crucial ...
+        # first we need the total translation
+        trans = self.translation + self.post_translation
+        # now we need the current norm vector
+        nv = self.norm_vector
+        # calculate the part of the translation vector parallel
+        # to the norm vector
+        tnv = projection_vector(trans, nv)
+
+        return self._d + nl.norm(tnv)

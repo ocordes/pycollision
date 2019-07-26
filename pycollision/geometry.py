@@ -58,3 +58,36 @@ def pyramid_volume(plane, height):
     nh = np.abs(np.dot(hv, nv) / nnv)
 
     return nnv * nh / 3.
+
+
+"""
+--------------------------------------------------------------------------------
+Intersections
+"""
+
+
+"""
+intersection_of_planes
+
+Line of intersection between two planes
+
+taken from: https://en.wikipedia.org/wiki/Plane_(geometry)
+      anchor: #Line_of_intersection_between_two_planes
+
+"""
+
+def intersection_of_planes(n1, d1, n2, d2):
+    # normalize the norm vectors
+    n1 = n1 / nl.norm(n1)
+    n2 = n2 / nl.norm(n2)
+
+    n1n2 = np.dot(n1, n2)
+    n1n2sqm1 = 1 - n1n2**2
+    n1xn2 = np.cross(n1, n2)
+
+    c1 = (d1 - d2 * n1n2)/n1n2sqm1
+    c2 = (d2 - d1 * n1n2)/n1n2sqm1
+
+    p = (c1 * n1) + (c2 * n2)
+
+    return p, n1xn2

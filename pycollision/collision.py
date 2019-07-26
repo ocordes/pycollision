@@ -173,6 +173,30 @@ def coll_plane2plane(plane1, plane2, **kwargs):
         debug(' atol=%g' % atol)
     result = CollisionResult()
 
+    cross = np.cross(plane1.norm_vector, plane2.norm_vector)
+
+    if verbose:
+        debug(' cross_check_vector=', cross)
+
+
+    # if the cross vector has zero length, that there both
+    # norm vectors are parallel
+    if not np.isclose(nl.norm(cross), 0., atol=atol):
+        result['collision'] = True
+        result['type'] = 'crossing'
+        p, v = intersection_of_planes(plane1.norm_vector, plane1.distance,
+                                      plane2.norm_vector, plane2.distance)
+        result['intersection'] = 'line'
+        result['intersection_params'] = (p, v)
+    else:
+        if np.isclose(plane1.distance, plane2.distance ,atol=atol):
+            result['collision'] = True
+            result['type'] = 'identical'
+            result['intersection'] = 'plane'
+            result['intersection_params'] = (plane1.distance, plane2.distance)
+
+
+
     if verbose:
         debug('collision:', result['collision'])
         debug('Done.')
