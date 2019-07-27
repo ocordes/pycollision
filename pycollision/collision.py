@@ -3,17 +3,25 @@
 pycollision/collision.py
 
 written by: Oliver Cordes 2019-06-30
-changed by: Oliver Cordes 2019-06-30
+changed by: Oliver Cordes 2019-07-27
 
 
 """
+import sys
 
 import pycollision.objects
 from pycollision.debug import debug
 from pycollision.geometry import *
 
-
 import numpy as np
+
+try:
+    import scipy
+    sv = scipy.__version__.split('.')
+    assert sv[0] > '0' or sv[1] >= '12'  # needs > '0.12'
+except:
+    print('Please install scipy >= 0.12')
+    sys.exit(0)
 
 
 # constants
@@ -34,12 +42,16 @@ class Collision(object):
         if isinstance(self, pycollision.objects.Box):
             if isinstance(obj, pycollision.objects.Box):
                 return coll_box2box(self, obj, **kwargs)
+            elif isinstance(obj, pycollision.objects.Plane):
+                return coll_box2plane(self, obj, **kwargs)
 
         if isinstance(self, pycollision.objects.Plane):
             if isinstance(obj, pycollision.objects.Plane):
                 return coll_plane2plane(self, obj, **kwargs)
             elif isinstance(obj, pycollision.objects.Sphere):
                 return coll_sphere2plane(obj, self, **kwargs)
+            elif isinstance(obj, pycollision.objects.Box):
+                return coll_box2plane(obj, self, **kwargs)
 
         raise ValueError('Cannot find any collision procedure' +
                          ' for given types {} and {}'.format(
@@ -178,7 +190,7 @@ def coll_plane2plane(plane1, plane2, **kwargs):
     cross = np.cross(plane1.norm_vector, plane2.norm_vector)
 
     if verbose:
-        debug(' cross_check_vector=', cross)
+        debug(' cross_check_vector=%s' % cross)
 
     # if the cross vector has zero length, that there both
     # norm vectors are parallel
@@ -222,9 +234,9 @@ def coll_sphere2plane(sphere, plane, **kwargs):
 
     # the vector s is the vector which is perpendicular to
     # the plane pointing direct to the center of the sphere
-    s = projection_vector(v, plane.norm_vector)
-
-    distance = nl.norm(s) + plane.distance
+    # s = projection_vector(v, plane.norm_vector)
+    # distance = nl.norm(s) + plane.distance
+    distance = np.abs(distance_to_plane(v, plane.norm_vector, plane.distance))
 
     result['distance'] = distance
     if verbose:
@@ -238,6 +250,67 @@ def coll_sphere2plane(sphere, plane, **kwargs):
 
     # every outside atol is clear
     result['collision'] = np.isclose(distance, 0., atol=atol)
+
+    if verbose:
+        debug('collision:', result['collision'])
+        debug('Done.')
+
+    return result
+
+
+"""
+coll_box2plane
+
+the algorithm based on the brute force test of all eight corners and
+their distances to the plane. If all distances have the same sign,
+they are always on the same side of the plane and therefore there is
+no collision. Otherwise with some points in front and behind the plane
+we have a collision. The collision figure, the polygon is a different
+story.
+"""
+
+
+def coll_box2plane(box, plane, **kwargs):
+    atol = cmp_atol
+    verbose = False
+    # handle all arguments
+    for key, value in kwargs.items():
+        if key == 'verbose':
+            verbose = value
+        elif key == 'atol':
+            atol = value
+
+    if verbose:
+        debug('calculating collision between a box and a plane')
+        debug(' atol=%g' % atol)
+    result = CollisionResult()
+
+    distances = np.zeros(len(box._corners))
+    c = box.corners
+    for i in range(len(distances)):
+        distances[i] = distance_to_plane(c[i], plane.norm_vector, plane.distance)
+
+    if verbose:
+        debug(' distances=%s' % distances)
+
+    nnp = nnm = nnn = 0
+    for i in distances:
+        if np.isclose(i, 0., atol=atol):
+            nnn += 1
+        elif i > atol:
+            nnp += 1
+        else:
+            nnm += 1
+
+    if verbose:
+        debug(' (nnp, nnm, nnn)=(%i, %i, %i)' % (nnp, nnm, nnn))
+
+    if nnn > 0:
+        # one or more points directly on the plane
+        result['collision'] = True
+    else:
+        if (nnp != 8) or (nnm != 8):
+            result['collision'] = True
 
     if verbose:
         debug('collision:', result['collision'])

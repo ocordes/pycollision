@@ -11,7 +11,7 @@ setup(
     version=__version__,
     author=__author__,
     author_email="ocordes@astro.uni-bonn.de",
-    description="Python module to detect collisions between 2d/3d objects", 
+    description="Python module to detect collisions between 2d/3d objects",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ocordes/pycollision",
@@ -19,6 +19,7 @@ setup(
     install_requires=[
      'numpy',
      'pytypevalidation',
+     'scipy>=0.12'
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

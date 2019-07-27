@@ -71,6 +71,10 @@ class Box(BasicObject):
         return [self.calculate_position(self._x1),
                 self.calculate_position(self._x2)]
 
+    @property
+    def corners(self):
+        return [self.calculate_position(i) for i in self._corners]
+
     def get_box_planes_and_corners(self, x1, x2):
         a = np.array([x1[0], x1[1], x1[2]])
         b = np.array([x2[0], x1[1], x1[2]])

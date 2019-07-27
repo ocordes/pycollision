@@ -28,6 +28,18 @@ def projection_vector(v, ref):
     return ref * np.dot(v, ref) / (nref**2)
 
 
+def distance_to_plane(v, plane_norm, plane_dist):
+    """
+    distance_to_plane
+
+    calculate the distance from a point v to the plane given
+    by the normal vector and the distance
+    """
+    s = projection_vector(v, plane_norm)
+
+    return nl.norm(s) - plane_dist
+
+
 def pyramid_volume(plane, height):
     """
     pyramid_volume

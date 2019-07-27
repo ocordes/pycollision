@@ -9,5 +9,6 @@ Python module to detect collisions between 2d/3d objects!
 At the moment these 3d objects are defined:
 * Spheres
 * Boxes
+* Planes
 
-Also only Sphere<->Sphere and Box<->Box collision detection algorithms are implemented.
+Also only Sphere<->Sphere, Box<->Box, Plane<->Plane and Plane<->Sphere collision detection algorithms are implemented.
