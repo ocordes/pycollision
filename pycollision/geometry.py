@@ -3,12 +3,16 @@
 pycollision/geometry.py
 
 written by: Oliver Cordes 2019-07-24
-changed by: Oliver Cordes 2019-07-24
+changed by: Oliver Cordes 2019-07-27
 
 """
 
 import numpy as np
 import numpy.linalg as nl
+
+import numpy.random as nr
+
+from pycollision.debug import debug
 
 
 def projection_vector(v, ref):
@@ -26,6 +30,32 @@ def projection_vector(v, ref):
 
     # calculate the projected vector
     return ref * np.dot(v, ref) / (nref**2)
+
+
+def point_of_plane(plane_norm, plane_dist, atol=1e-8):
+    """
+    point_of_plane
+
+    calculates a random point on the plane
+    """
+    debug('plane_norm=%s' % plane_norm)
+    debug('plane_dist=%s' % plane_dist)
+    if not np.isclose(plane_norm[2], 0, atol=atol):
+        x1 = nr.randint(0, 10) + 1
+        x2 = nr.randint(0, 10) + 1
+        x3 = (plane_dist - plane_norm[0] * x1 - plane_norm[1] * x2) / plane_norm[2]
+    elif not np.isclose(plane_norm[1], 0, atol=atol):
+        x1 = nr.randint(0, 10) + 1
+        x3 = nr.randint(0, 10) + 1
+        x2 = (plane_dist - plane_norm[0] * x1 - plane_norm[2] * x3) / plane_norm[1]
+    elif not np.isclose(plane_norm[0], 0, atol=atol):
+        x2 = nr.randint(0, 10) + 1
+        x3 = nr.randint(0, 10) + 1
+        x1 = (plane_dist - plane_norm[1] * x2 - plane_norm[2] * x3) / plane_norm[0]
+    else:
+        raise ValueError('zero norm vector given for plane!')
+
+    return np.array([x1, x2, x3], dtype=np.float64)
 
 
 def distance_to_plane(v, plane_norm, plane_dist):
@@ -104,3 +134,31 @@ def intersection_of_planes(n1, d1, n2, d2):
     p = (c1 * n1) + (c2 * n2)
 
     return p, n1xn2
+
+
+def intersection_line_plane(edge, norm_vector, distance, atol=1e-8):
+    """
+    intersection_line_plane
+
+    calculates the intersection point between a ray and a plane
+    """
+    edge_direction = edge[0] - edge[1]
+
+    plane_point = point_of_plane(norm_vector, distance)
+
+    debug(' plane_point=%s' % plane_point)
+
+    ndotu = norm_vector.dot(edge_direction)
+
+    if abs(ndotu) < atol:
+        debug(' no intersection or line is within plane')
+        return None
+
+    w = edge[0] - plane_point
+    si = -norm_vector.dot(w) / ndotu
+    Psi = w + si * edge_direction + plane_point
+
+    print(Psi)
+    debug(' intersection point=%s' % Psi)
+
+    return Psi

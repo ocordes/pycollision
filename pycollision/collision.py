@@ -24,6 +24,9 @@ except:
     sys.exit(0)
 
 
+from scipy.spatial import ConvexHull
+
+
 # constants
 cmp_atol = 1e-08
 
@@ -311,6 +314,27 @@ def coll_box2plane(box, plane, **kwargs):
     else:
         if (nnp != 8) or (nnm != 8):
             result['collision'] = True
+
+    if result['collision']:
+        # try to get the intersection figure
+        edges = box.edges
+        points = []
+        for e in edges:
+            # test a single edge ...
+            p = intersection_line_plane(e, plane.norm_vector, plane.distance)
+            if p is not None:
+                vol = box.get_volume(center=p)
+                if verbose:
+                    debug(' c=%s vol=%g vol_ref=%g' % (i, vol, box._volume))
+                if np.isclose(vol, box._volume, rtol=atol, atol=atol):
+                    points.append(p)
+
+                # if len(points) > 3:
+                #    hull = ConvexHull(np.array(points))
+                #    debug(' convexhull = %s' % hull)
+
+        if verbose:
+            debug(' points in the plane = %s' % points)
 
     if verbose:
         debug('collision:', result['collision'])

@@ -75,6 +75,14 @@ class Box(BasicObject):
     def corners(self):
         return [self.calculate_position(i) for i in self._corners]
 
+    @property
+    def edges(self):
+        c = self.corners
+        edges = [(c[0], c[1]), (c[1], c[2]), (c[2], c[3]), (c[3], c[0]),
+                 (c[0], c[4]), (c[1], c[5]), (c[2], c[6]), (c[3], c[7]),
+                 (c[4], c[5]), (c[5], c[6]), (c[6], c[7]), (c[7], c[4])]
+        return edges
+
     def get_box_planes_and_corners(self, x1, x2):
         a = np.array([x1[0], x1[1], x1[2]])
         b = np.array([x2[0], x1[1], x1[2]])
@@ -91,7 +99,10 @@ class Box(BasicObject):
         s5 = [a, b, c, d]
         s6 = [e, f, g, h]
 
-        return [s1, s2, s3, s4, s5, s6], [a, b, c, d, e, f, g, h]
+        planes = [s1, s2, s3, s4, s5, s6]
+        corners = [a, b, c, d, e, f, g, h]
+
+        return planes, corners
 
     def get_six_plane_corrected(self):
         nsix = []
