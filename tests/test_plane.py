@@ -3,7 +3,7 @@
 tests/test_plane.py
 
 written by: Oliver Cordes 2019-07-26
-changed by: Oliver Cordes 2019-07-26
+changed by: Oliver Cordes 2019-07-27
 
 """
 
@@ -80,6 +80,45 @@ class TestCollision(unittest.TestCase):
         p1 = create_xy_plane(0)
         p2 = create_xy_plane(1)
 
-        result = p1.has_collisions(p2, verbose=True)
+        result = p1.has_collisions(p2)
 
         self.assertEqual(result['collision'], False)
+
+    # xy and yz collision
+    def test_test2(self):
+        p1 = create_xy_plane(0)
+        p2 = create_yz_plane(1)
+
+        result = p1.has_collisions(p2)
+
+    # 2 xy planes parallel to test atol
+    def test_test10(self):
+        p1 = create_xy_plane(0)
+        p2 = create_xy_plane(1e-5)
+
+        result = p1.has_collisions(p2, atol=1e-4)
+
+        self.assertEqual(result['collision'], True)
+
+    def test_test11(self):
+        p1 = create_xy_plane(0)
+        p2 = create_xy_plane(1e-5)
+
+        result = p1.has_collisions(p2, atol=1e-6)
+
+        self.assertEqual(result['collision'], False)
+
+    # test all parameters for has_collisions
+    def test_test20(self):
+        p1 = create_xy_plane(0)
+        p2 = create_yz_plane(1)
+
+        result = p1.has_collisions(p2, verbose=True, item='value')
+
+    # test of collision with not collision objects
+    def test_test100(self):
+        p1 = create_xy_plane(0)
+        i = 1  # int object
+
+        with self.assertRaises(ValueError) as context:
+            result = p1.has_collisions(i)

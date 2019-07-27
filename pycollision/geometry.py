@@ -76,6 +76,7 @@ taken from: https://en.wikipedia.org/wiki/Plane_(geometry)
 
 """
 
+
 def intersection_of_planes(n1, d1, n2, d2):
     # normalize the norm vectors
     n1 = n1 / nl.norm(n1)

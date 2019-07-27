@@ -1,4 +1,17 @@
+"""
+
+tests/test_sphere.py
+
+written by: Oliver Cordes 2019-07-01
+changed by: Oliver Cordes 2019-07-27
+
+"""
+
+
 from pycollision.objects import Sphere
+
+from pycollision.planes import create_xy_plane, create_xz_plane, \
+                               create_yz_plane
 
 import numpy as np
 
@@ -118,6 +131,48 @@ class TestCollision(unittest.TestCase):
         s2.translation = [1e-4, 0, 0]
 
         result = s1.has_collisions(s2, atol=1e-5, item='value')
+
+        self.assertEqual(result['collision'], False)
+
+    # test sphere with a plane, sphere->has_collisions(plane)
+    def test_test10(self):
+        s1 = Sphere([0, 0, 0], 1.)
+
+        p1 = create_yz_plane(1.)
+
+        result = s1.has_collisions(p1)
+
+        self.assertEqual(result['collision'], True)
+
+    # test sphere with a plane, plane->has_collisions(sphere)
+    def test_test11(self):
+        s1 = Sphere([0, 0, 0], 1.)
+
+        p1 = create_yz_plane(1.)
+
+        result = p1.has_collisions(s1)
+
+        self.assertEqual(result['collision'], True)
+
+    # test sphere with a plane
+    def test_test12(self):
+        s1 = Sphere([0, 0, 0], 1.)
+
+        p1 = create_yz_plane(1.)
+        p1.translation = [1e-5, 0., 0.]
+
+        result = s1.has_collisions(p1, verbose=True, atol=1e-4, item='value')
+
+        self.assertEqual(result['collision'], True)
+
+    # test sphere with a plane
+    def test_test13(self):
+        s1 = Sphere([0, 0, 0], 1.)
+
+        p1 = create_yz_plane(1.)
+        p1.translation = [1e-5, 0., 0.]
+
+        result = s1.has_collisions(p1, atol=1e-6)
 
         self.assertEqual(result['collision'], False)
 

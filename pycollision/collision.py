@@ -38,6 +38,8 @@ class Collision(object):
         if isinstance(self, pycollision.objects.Plane):
             if isinstance(obj, pycollision.objects.Plane):
                 return coll_plane2plane(self, obj, **kwargs)
+            elif isinstance(obj, pycollision.objects.Sphere):
+                return coll_sphere2plane(obj, self, **kwargs)
 
         raise ValueError('Cannot find any collision procedure' +
                          ' for given types {} and {}'.format(
@@ -178,7 +180,6 @@ def coll_plane2plane(plane1, plane2, **kwargs):
     if verbose:
         debug(' cross_check_vector=', cross)
 
-
     # if the cross vector has zero length, that there both
     # norm vectors are parallel
     if not np.isclose(nl.norm(cross), 0., atol=atol):
@@ -189,13 +190,11 @@ def coll_plane2plane(plane1, plane2, **kwargs):
         result['intersection'] = 'line'
         result['intersection_params'] = (p, v)
     else:
-        if np.isclose(plane1.distance, plane2.distance ,atol=atol):
+        if np.isclose(plane1.distance, plane2.distance, atol=atol):
             result['collision'] = True
             result['type'] = 'identical'
             result['intersection'] = 'plane'
             result['intersection_params'] = (plane1.distance, plane2.distance)
-
-
 
     if verbose:
         debug('collision:', result['collision'])
