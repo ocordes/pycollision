@@ -19,7 +19,7 @@ setup(
     install_requires=[
      'numpy',
      'pytypevalidation',
-     'scipy>=0.12'
+     'scipy>=0.12, <=1.1.0'
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

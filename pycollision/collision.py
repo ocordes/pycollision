@@ -3,7 +3,7 @@
 pycollision/collision.py
 
 written by: Oliver Cordes 2019-06-30
-changed by: Oliver Cordes 2019-07-27
+changed by: Oliver Cordes 2019-07-28
 
 
 """
@@ -24,7 +24,12 @@ except:
     sys.exit(0)
 
 
-from scipy.spatial import ConvexHull
+if sv[0] > '1' and sv[1] > '1':
+    # disable ConvexHull if scipy version is larger as 1.1!
+    # because of segfaults on macos!
+    ConvexHull = None
+else:
+    from scipy.spatial import ConvexHull
 
 
 # constants
@@ -329,12 +334,20 @@ def coll_box2plane(box, plane, **kwargs):
                 if np.isclose(vol, box._volume, rtol=atol, atol=atol):
                     points.append(p)
 
-                # if len(points) > 3:
-                #    hull = ConvexHull(np.array(points))
-                #    debug(' convexhull = %s' % hull)
+        points = np.array(points)
 
         if verbose:
-            debug(' points in the plane = %s' % points)
+            debug(' points (unsorted) in the plane = %s' % points)
+        if len(points) > 3:
+            points = polygon_sort(points, plane.norm_vector, atol=atol)
+                    # if ConvexHull is not None:
+                    #     hull = ConvexHull(np.array(points))
+                    #     debug(' convexhull = %s' % hull.points)
+                    # else:
+                    #     debug(' convexhull is disabled!')
+
+        if verbose:
+            debug(' points (sorted) in the plane = %s' % points)
 
     if verbose:
         debug('collision:', result['collision'])
