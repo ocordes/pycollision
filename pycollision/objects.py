@@ -1,9 +1,16 @@
+#
+# pycollision/objects.py
+#
+#written by: Oliver Cordes 2019-06-29
+#changed by: Oliver Cordes 2019-07-26
+#
 """
 
-pycollision/objects.py
+pycollision.objects
+-------------------
 
-written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-07-26
+This is the base module which hold all base objects and
+implementations.
 
 """
 
@@ -23,7 +30,20 @@ import numpy.linalg as nl
 
 
 class BasicObject(Position, Collision):
+    """
+
+    This is a combined object for 3D objects, containing
+    the position and the collision routines.
+
+    Parameters
+    ----------
+
+    verbose : bool, optional
+        make the object verbose, default is False
+
+    """
     def __init__(self, verbose=False):
+
         Position.__init__(self)
         Collision.__init__(self)
 
@@ -31,6 +51,37 @@ class BasicObject(Position, Collision):
 
 
 class Sphere(BasicObject):
+    """
+    This is the implementation of a Sphere Object.
+
+    Parameters
+    ----------
+    x : Vector
+        the center position of the sphere
+    radius: PosFloat
+        a positive float for the radius
+    verbose: bool, optional
+        make the object verbose, default=False
+
+    Raises
+    ------
+    TypeError
+        if the input types are not compatible
+    ValueError
+        if the input values fit not into the contraints,
+        e.g. PosFloat with Floats <= 0.
+        
+
+    Examples
+    --------
+
+    .. code-block:: python
+
+        s = Sphere([1., 1., 1.,], 2.) # creates a Sphere at the
+                                      # position [1.,1.,1.] with
+                                      # a radius of 2.
+
+    """
     @typevalidate(isclass=True)
     def __init__(self, x: Vector, radius: PosFloat, verbose: bool=False):
         BasicObject.__init__(self, verbose=verbose)
@@ -50,6 +101,11 @@ class Sphere(BasicObject):
 
 
 class Box(BasicObject):
+    """
+    Box(BasicObject)
+
+    This is the implementation of a Box Object.
+    """
     @typevalidate(isclass=True)
     def __init__(self, x1: Vector, x2: Vector, verbose: bool=False):
         BasicObject.__init__(self, verbose=verbose)
@@ -128,6 +184,11 @@ class Box(BasicObject):
 
 
 class Plane(BasicObject):
+    """
+    Plane(BasicObject)
+
+    This is the implementation of a Plane Object.
+    """
     @typevalidate(isclass=True)
     def __init__(self, n: Vector, d: float, verbose: bool=False):
         BasicObject.__init__(self, verbose=verbose)

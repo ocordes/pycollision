@@ -1,9 +1,17 @@
+#
+# pycollision/planes.py
+#
+# written by: Oliver Cordes 2019-07-24
+# changed by: Oliver Cordes 2019-07-24
+#
+
 """
 
-pycollision/planes.py
+pycollision.planes
+-------------------
 
-written by: Oliver Cordes 2019-07-24
-changed by: Oliver Cordes 2019-07-24
+This module defines some initialization routines for
+basic 3d-planes.
 
 """
 

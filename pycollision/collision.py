@@ -1,10 +1,15 @@
+#
+# pycollision/collision.py
+#
+# written by: Oliver Cordes 2019-06-30
+# changed by: Oliver Cordes 2019-07-28
+#
 """
 
-pycollision/collision.py
+pycollision.collision
+---------------------
 
-written by: Oliver Cordes 2019-06-30
-changed by: Oliver Cordes 2019-07-28
-
+This module defines all 3d collision routines
 
 """
 import sys
