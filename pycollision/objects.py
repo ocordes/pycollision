@@ -87,10 +87,28 @@ class Sphere(BasicObject):
 
     @property
     def position(self):
+        """
+        returns the center position of the sphere, after
+        applying all positional transformations
+
+        Returns
+        -------
+        Vector
+            the 3D vector of the sphere center
+
+        """
         return self.calculate_position(self._x)
 
     @property
     def radius(self):
+        """
+        returns the radius of the sphere
+
+        Returns
+        -------
+        float
+            the radius of the sphere
+        """
         return self._radius
 
     def __repr__(self):
@@ -99,9 +117,34 @@ class Sphere(BasicObject):
 
 class Box(BasicObject):
     """
-    Box(BasicObject)
-
     This is the implementation of a Box Object.
+
+    Parameters
+    ----------
+    x1: Vector
+        the lower front left corner of the box
+    x2: Vector
+        the upper back right corner of the box
+    verbose: bool, optional
+        make the object verbose, default=False
+
+    Raises
+    ------
+    TypeError
+        if the input types are not compatible
+    ValueError
+        if the input values fit not into the contraints,
+        e.g. PosFloat with Floats <= 0.
+
+
+    Examples
+    --------
+
+    .. code-block:: python
+
+        s = Box([0., 0., 0.,], [1., 1., 1.]) # creates a box starting at
+                                          # position [0.,0.,0.] with
+                                          # length = width = height = 1.
     """
     @typevalidate(isclass=True)
     def __init__(self, x1: Vector, x2: Vector, verbose: bool=False):
@@ -182,7 +225,6 @@ class Box(BasicObject):
 
 class Plane(BasicObject):
     """
-    Plane(BasicObject)
 
     This is the implementation of a Plane Object.
     """

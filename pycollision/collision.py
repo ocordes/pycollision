@@ -81,6 +81,20 @@ class Collision(object):
 
 
 class CollisionResult(object):
+    """
+    The CollisionResult object which provides the results of
+    the collision test. It works like a normal Python
+    dictionary. The only item which is always available is
+    'collision'. All additional data are different for different
+    collision types.
+
+    Attributes
+    ----------
+    _collision: bool
+        hold the collision result
+    _data: dict
+        additional information
+    """
     def __init__(self):
         self._collision = False
         self._data = {}
@@ -98,6 +112,13 @@ class CollisionResult(object):
             return self._data[idx]
 
     def items(self):
+        """
+        Returns
+        -------
+        dict
+            the complete data of the result dictionary
+
+        """
         return self._data.items()
 
     def __call__(self):
