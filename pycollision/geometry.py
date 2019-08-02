@@ -1,9 +1,14 @@
+#
+# pycollision/geometry.py
+#
+# written by: Oliver Cordes 2019-07-24
+# changed by: Oliver Cordes 2019-07-27
+#
+
 """
 
-pycollision/geometry.py
-
-written by: Oliver Cordes 2019-07-24
-changed by: Oliver Cordes 2019-07-27
+geometry library defines some linear algebra routines
+which were used by the objects and collision algorithms
 
 """
 
@@ -45,8 +50,8 @@ def point_of_plane(plane_norm, plane_dist, atol=cmp_atol):
 
     calculates a random point on the plane
     """
-    #debug('plane_norm=%s' % plane_norm)
-    #debug('plane_dist=%s' % plane_dist)
+    # debug('plane_norm=%s' % plane_norm)
+    # debug('plane_dist=%s' % plane_dist)
     if not np.isclose(plane_norm[2], 0, atol=atol):
         x1 = 0.
         x2 = 0.
@@ -103,7 +108,6 @@ def distance_to_plane(v, plane_norm, plane_dist):
     return nl.norm(s) - plane_dist
 
 
-
 def orthogonal_vector(plane_norm, atol=cmp_atol):
     """
     orthogonal_vector
@@ -131,7 +135,6 @@ def orthogonal_vector(plane_norm, atol=cmp_atol):
     v = np.array([x1, x2, x3])
 
     return v / nl.norm(v)
-
 
 
 def plane_vectors(plane_norm, atol=cmp_atol):

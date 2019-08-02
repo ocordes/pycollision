@@ -8,3 +8,4 @@ Modules
    modules/planes
    modules/collision
    modules/position
+   modules/geometry

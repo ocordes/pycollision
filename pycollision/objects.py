@@ -1,8 +1,8 @@
 #
 # pycollision/objects.py
 #
-#written by: Oliver Cordes 2019-06-29
-#changed by: Oliver Cordes 2019-07-26
+# written by: Oliver Cordes 2019-06-29
+# changed by: Oliver Cordes 2019-08-02
 #
 """
 

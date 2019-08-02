@@ -330,7 +330,9 @@ def coll_box2plane(box, plane, **kwargs):
     distances = np.zeros(len(box._corners))
     c = box.corners
     for i in range(len(distances)):
-        distances[i] = distance_to_plane(c[i], plane.norm_vector, plane.distance)
+        distances[i] = distance_to_plane(c[i],
+                                         plane.norm_vector,
+                                         plane.distance)
 
     if verbose:
         debug(' distances=%s' % distances)
@@ -374,11 +376,6 @@ def coll_box2plane(box, plane, **kwargs):
             debug(' points (unsorted) in the plane = %s' % points)
         if len(points) > 3:
             points = polygon_sort(points, plane.norm_vector, atol=atol)
-                    # if ConvexHull is not None:
-                    #     hull = ConvexHull(np.array(points))
-                    #     debug(' convexhull = %s' % hull.points)
-                    # else:
-                    #     debug(' convexhull is disabled!')
 
         if verbose:
             debug(' points (sorted) in the plane = %s' % points)
