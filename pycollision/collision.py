@@ -2,7 +2,7 @@
 # pycollision/collision.py
 #
 # written by: Oliver Cordes 2019-06-30
-# changed by: Oliver Cordes 2019-07-28
+# changed by: Oliver Cordes 2019-08-02
 #
 """
 
@@ -11,7 +11,12 @@ This module defines all 3d collision routines
 """
 import sys
 
-import pycollision.objects
+try:
+    import pycollision.objects
+except:
+    pass
+
+
 from pycollision.debug import debug
 from pycollision.geometry import *
 
@@ -39,10 +44,32 @@ cmp_atol = 1e-08
 
 
 class Collision(object):
+    """
+    The collision object, provides only the member has_collisions.
+    """
     def __init__(self):
         pass
 
     def has_collisions(self, obj, **kwargs):
+        """
+
+        calls the external collision functions
+
+        Parameters
+        ----------
+        obj:
+            the object to test for collision
+        kwargs:
+            additional named parameters which were redirected to
+            the collision functions
+
+        Raises
+        ------
+        ValueError
+            will be raised if obj doesn't fit to any collision
+            functions
+
+        """
         if isinstance(self, pycollision.objects.Sphere):
             if isinstance(obj, pycollision.objects.Sphere):
                 return coll_sphere2sphere(self, obj, **kwargs)
