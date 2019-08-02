@@ -1,5 +1,5 @@
 #
-# pycollision/objects.py
+# pycollision/objects3d.py
 #
 # written by: Oliver Cordes 2019-06-29
 # changed by: Oliver Cordes 2019-08-02

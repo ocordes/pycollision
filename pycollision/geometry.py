@@ -2,7 +2,7 @@
 # pycollision/geometry.py
 #
 # written by: Oliver Cordes 2019-07-24
-# changed by: Oliver Cordes 2019-07-27
+# changed by: Oliver Cordes 2019-08-02
 #
 
 """

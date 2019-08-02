@@ -7,7 +7,7 @@ changed by: Oliver Cordes 2019-07-22
 
 """
 
-from pycollision.objects import Box
+from pycollision.objects3d import Box
 
 import numpy as np
 

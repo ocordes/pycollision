@@ -12,7 +12,7 @@ This module defines all 3d collision routines
 import sys
 
 try:
-    import pycollision.objects
+    import pycollision.objects3d
 except:
     pass
 
@@ -54,24 +54,24 @@ class Collision(object):
             functions
 
         """
-        if isinstance(self, pycollision.objects.Sphere):
-            if isinstance(obj, pycollision.objects.Sphere):
+        if isinstance(self, pycollision.objects3d.Sphere):
+            if isinstance(obj, pycollision.objects3d.Sphere):
                 return coll_sphere2sphere(self, obj, **kwargs)
-            elif isinstance(obj, pycollision.objects.Plane):
+            elif isinstance(obj, pycollision.objects3d.Plane):
                 return coll_sphere2plane(self, obj, **kwargs)
 
-        if isinstance(self, pycollision.objects.Box):
-            if isinstance(obj, pycollision.objects.Box):
+        if isinstance(self, pycollision.objects3d.Box):
+            if isinstance(obj, pycollision.objects3d.Box):
                 return coll_box2box(self, obj, **kwargs)
-            elif isinstance(obj, pycollision.objects.Plane):
+            elif isinstance(obj, pycollision.objects3d.Plane):
                 return coll_box2plane(self, obj, **kwargs)
 
-        if isinstance(self, pycollision.objects.Plane):
-            if isinstance(obj, pycollision.objects.Plane):
+        if isinstance(self, pycollision.objects3d.Plane):
+            if isinstance(obj, pycollision.objects3d.Plane):
                 return coll_plane2plane(self, obj, **kwargs)
-            elif isinstance(obj, pycollision.objects.Sphere):
+            elif isinstance(obj, pycollision.objects3d.Sphere):
                 return coll_sphere2plane(obj, self, **kwargs)
-            elif isinstance(obj, pycollision.objects.Box):
+            elif isinstance(obj, pycollision.objects3d.Box):
                 return coll_box2plane(obj, self, **kwargs)
 
         raise ValueError('Cannot find any collision procedure' +

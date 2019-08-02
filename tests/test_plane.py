@@ -7,7 +7,7 @@ changed by: Oliver Cordes 2019-07-27
 
 """
 
-from pycollision.objects import Plane
+from pycollision.objects3d import Plane
 from pycollision.planes import create_xy_plane, create_xz_plane, \
                                create_yz_plane
 from pycollision.rotation import create_rotation_matrix, \

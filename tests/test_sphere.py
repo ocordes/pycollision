@@ -8,7 +8,7 @@ changed by: Oliver Cordes 2019-07-27
 """
 
 
-from pycollision.objects import Sphere
+from pycollision.objects3d import Sphere
 
 from pycollision.planes import create_xy_plane, create_xz_plane, \
                                create_yz_plane

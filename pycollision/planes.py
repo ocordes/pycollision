@@ -2,7 +2,7 @@
 # pycollision/planes.py
 #
 # written by: Oliver Cordes 2019-07-24
-# changed by: Oliver Cordes 2019-07-24
+# changed by: Oliver Cordes 2019-08-02
 #
 
 """
@@ -16,7 +16,7 @@ basic 3d-planes.
 import numpy as np
 
 
-from pycollision.objects import Plane
+from pycollision.objects3d import Plane
 
 """
 default normal vectors
