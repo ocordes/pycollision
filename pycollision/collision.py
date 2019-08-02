@@ -22,22 +22,6 @@ from pycollision.geometry import *
 
 import numpy as np
 
-try:
-    import scipy
-    sv = scipy.__version__.split('.')
-    assert sv[0] > '0' or sv[1] >= '12'  # needs > '0.12'
-except:
-    print('Please install scipy >= 0.12')
-    sys.exit(0)
-
-
-if sv[0] > '1' and sv[1] > '1':
-    # disable ConvexHull if scipy version is larger as 1.1!
-    # because of segfaults on macos!
-    ConvexHull = None
-else:
-    from scipy.spatial import ConvexHull
-
 
 # constants
 cmp_atol = 1e-08
