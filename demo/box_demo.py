@@ -8,7 +8,7 @@ changed by: Oliver Cordes 2019-07-21
 
 """
 
-from pycollision.objects import Box
+from pycollision.objects3d import Box
 
 from pycollision.rotation import *
 

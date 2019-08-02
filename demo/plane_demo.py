@@ -5,7 +5,7 @@ demonstration of the Plane handling and collision detection
 
 """
 
-from pycollision.objects import Sphere, Plane, Box
+from pycollision.objects3d import Sphere, Plane, Box
 from pycollision.planes import create_xy_plane, create_xz_plane, \
                                create_yz_plane
 

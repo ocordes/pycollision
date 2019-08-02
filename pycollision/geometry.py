@@ -310,19 +310,18 @@ def intersection_line_plane(edge, norm_vector, distance, atol=cmp_atol):
 
     plane_point = point_of_plane(norm_vector, distance)
 
-    debug(' plane_point=%s' % plane_point)
+    # debug(' plane_point=%s' % plane_point)
 
     ndotu = norm_vector.dot(edge_direction)
 
     if abs(ndotu) < atol:
-        debug(' no intersection or line is within plane')
+        # debug(' no intersection or line is within plane')
         return None
 
     w = edge[0] - plane_point
     si = -norm_vector.dot(w) / ndotu
     Psi = w + si * edge_direction + plane_point
 
-    print(Psi)
-    debug(' intersection point=%s' % Psi)
+    # debug(' intersection point=%s' % Psi)
 
     return Psi

@@ -5,7 +5,7 @@ demonstration of the Sphere handling and collision detection
 
 """
 
-from pycollision.objects import Sphere
+from pycollision.objects3d import Sphere
 
 from pycollision.rotation import *
 
