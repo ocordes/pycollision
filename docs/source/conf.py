@@ -17,6 +17,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../pycollision'))
 
+# bad patch, but it helps to load pycollision.collision ...
+import pycollision.objects
+
 
 # -- Project information -----------------------------------------------------
 

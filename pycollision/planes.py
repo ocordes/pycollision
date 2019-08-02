@@ -7,9 +7,6 @@
 
 """
 
-pycollision.planes
--------------------
-
 This module defines some initialization routines for
 basic 3d-planes.
 

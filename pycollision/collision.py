@@ -6,9 +6,6 @@
 #
 """
 
-pycollision.collision
----------------------
-
 This module defines all 3d collision routines
 
 """

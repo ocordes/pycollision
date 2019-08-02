@@ -1,10 +1,13 @@
+#
+# pycollision/position.py
+#
+# written by: Oliver Cordes 2019-06-29
+# changed by: Oliver Cordes 2019-07-22
+#
+
 """
 
-pycollision/position.py
-
-written by: Oliver Cordes 2019-06-29
-changed by: Oliver Cordes 2019-07-22
-
+This module is for all positional operations and attributes
 """
 
 from typevalidation.decorator import typevalidate
@@ -20,6 +23,22 @@ zero_matrix = np.array([[1., 0., 0., 0.],
 
 
 class Position(object):
+    """
+    Basic object for all positional operations
+
+    Attributes
+    ----------
+    _matrix: np.array(4x4)
+        internal variable which holds the 4d tranformation matrix
+    _post_translation: np.array(3)
+        internal variable which holds a translation vector which is
+        used after the transformation matrix
+
+    Note
+    ----
+    Don't use _matrix or _post_translation is not necessary.
+
+    """
     def __init__(self):
         self._matrix = zero_matrix.copy()
         self._post_translation = np.array([0., 0., 0.], dtype=np.float64)

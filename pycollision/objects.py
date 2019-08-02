@@ -6,9 +6,6 @@
 #
 """
 
-pycollision.objects
--------------------
-
 This is the base module which hold all base objects and
 implementations.
 
@@ -70,7 +67,7 @@ class Sphere(BasicObject):
     ValueError
         if the input values fit not into the contraints,
         e.g. PosFloat with Floats <= 0.
-        
+
 
     Examples
     --------
