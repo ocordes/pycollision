@@ -60,6 +60,12 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 
+# theme options
+html_theme_options = {
+    'github_user': 'ocordes',
+    'github_repo': 'pytypevalidation',
+}
+
 
 # Mocking
 
